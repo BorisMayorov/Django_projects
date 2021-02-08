@@ -1,0 +1,29 @@
+{% load techblog_tags %}
+{% load cache %}
+{% cache 500 sidebar %}
+
+<div class="sidebar">
+    <div class="widget">
+        <h2 class="widget-title">Popular Posts</h2>
+        <div class="blog-list-widget">
+            <div class="list-group">
+                {% popular_posts as posts %}
+                {% for post in posts %}
+                <a href="{{ post.get_absolute_url }}"
+                    class="list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="w-100 justify-content-between">
+                        {% if post.picture %}
+                        <img src="{{post.picture.url}}" alt="" class="img-fluid float-left">
+                        {% endif %}
+                        <h5 class="mb-1">{{ post|truncatechars:32 }}</h5>
+                        <small>{{ post.created_at }}</small>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div><!-- end blog-list -->
+        {% get_tags %}
+    </div><!-- end widget -->
+</div><!-- end sidebar -->
+
+{% endcache %}

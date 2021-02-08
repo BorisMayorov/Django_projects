@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% load static %}
+{% load bootstrap %}
+{% load hitcount_tags %}
+{% block title %}{{ post }} :: {{block.super}} {% endblock title %}
+
+
+
+{% block content %}
+
+<div id="wrapper">
+
+
+    <section class="section single-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+                    <div class="page-wrapper">
+                        <div class="blog-title-area text-center">
+                            <ol class="breadcrumb hidden-xs-down">
+                                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                                <li class="breadcrumb-item"><a
+                                        href="{{ post.category.get_absolute_url }}">{{ post.category }}</a></li>
+                                <li class="breadcrumb-item active">{{ post }}</li>
+                            </ol>
+
+                            <span class="color-orange"><a href="{{ post.category.get_absolute_url }}"
+                                    title="">{{ post.category }}</a></span>
+
+                            <h3>{{ post.name }}</h3>
+
+                            <div class="blog-meta big-meta">
+                                <small>{{ post.created_at }}</small>
+                                <small>{{ post.author }}</small>
+                                <small><i class="fa fa-eye"></i> {% get_hit_count for post %}</small>
+                                <h2>{{ post.hit_count_generic.hits }}</h2>
+                            </div><!-- end meta -->
+
+
+                        </div><!-- end title -->
+
+                        <div class="single-post-media">
+                            {% if post.picture %}
+                            <img src="{{ post.picture.url }}" alt="" class="img-fluid">
+                            {% endif %}
+
+                        </div><!-- end media -->
+
+                        <div class="blog-content">
+
+                            <div class="pp">
+                                {{ post.content|safe|linebreaksbr }}
+                            </div><!-- end pp -->
+                        </div><!-- end content -->
+
+                        <div class="blog-title-area">
+                            <div class="tag-cloud-single">
+                                <span>Tags</span>
+                                {% for tag in post.tags.all %}
+                                <small><a href="{{ tag.get_absolute_url }}" title="">{{ tag }}</a></small>
+                                {% endfor %}
+
+
+                            </div><!-- end meta -->
+
+
+                        </div><!-- end title -->
+
+
+
+                        <hr class="invis1">
+
+                        <div class="custombox clearfix">
+                            {% with comments.count as total_comments %}
+                            <h4 class="small-title">{{ total_comments }} comment{{ total_comments|pluralize }}</h4>
+                            {% endwith %}
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="comments-list">
+
+                                        {% for comment in comments %}
+                                        <div class="media">
+                                            <div class="media-body">
+                                                <h4 class="media-heading user_name">
+                                                    {{comment.user}}<small>{{ comment.created }}</small></h4>
+                                                <p>{{comment.body|safe|linebreaksbr}}</p>
+                                            </div>
+
+                                        </div>
+                                        {% empty %}
+                                        <p>There are no comments yet.</p>
+                                        {% endfor %}
+
+
+                                    </div>
+                                </div><!-- end col -->
+                            </div><!-- end row -->
+                        </div><!-- end custom-box -->
+
+                        <hr class="invis1">
+                        {% if request.user.is_authenticated %}
+
+                        <div class="custombox clearfix">
+                            <h4 class="small-title">Leave a Reply</h4>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <form class="form-wrapper" action="." method="POST">
+                                        {{ form.media }}
+                                        {{ form }}
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-primary mt-2 ">Submit
+                                            Comment</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="custombox">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <form class="form-wrapper ">
+                                        <span>Please
+                                            <a class="text-uppercase text-primary"
+                                                href="{% url 'login' %}?next={{request.path}}?page={{page_obj.number}}">
+                                                Login </a>
+                                            or
+                                            <a class="text-uppercase text-primary"
+                                                href="{% url 'register' %}?next={{request.path}}?page={{page_obj.number}}">
+                                                Register </a>
+                                            to Leave a Comment.
+                                        </span>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+
+
+
+                    </div><!-- end page-wrapper -->
+                </div><!-- end col -->
+
+                <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                    {% include "inc/_sidebar.html" %}
+                </div><!-- end col -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </section>
+
+
+
+    <div class="dmtop">Scroll to Top</div>
+
+</div><!-- end wrapper -->
+{% endblock content %}

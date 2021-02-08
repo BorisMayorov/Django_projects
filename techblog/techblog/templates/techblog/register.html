@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+{% load bootstrap %}
+{% block title %} Register :: {{block.super}} {% endblock title %}
+{% block content %}
+
+<div class="container register">
+    <h2 class="">Register</h2>
+    <div class="row">
+        <div class="col-lg-12">
+            <form class="form-wrapper" method="POST">
+                {% csrf_token %}
+                {{ form|bootstrap }}
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

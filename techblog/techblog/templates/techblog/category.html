@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load static %}
+{% load hitcount_tags %}
+
+{% block title %}{{ title }} :: {{block.super}} {% endblock title %}
+
+
+
+{% block content %}
+
+<div id="wrapper">
+
+
+    <div class="page-title lb single-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                    <h2><i class="fa fa-gears bg-orange"></i> {{ title }} </h2>
+                </div><!-- end col -->
+                <div class="col-lg-4 col-md-4 col-sm-12 hidden-xs-down hidden-sm-down">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href=" {% url 'home' %}">Home</a></li>
+                        <li class="breadcrumb-item active">{{ title }}</li>
+                    </ol>
+                </div><!-- end col -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </div><!-- end page-title -->
+
+    <section class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                    {% include "inc/_sidebar.html" %}
+                </div><!-- end col -->
+
+                <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+                    <div class="page-wrapper">
+                        <div class="blog-grid-system">
+                            <div class="row">
+                                {% for post in posts %}
+                                <div class="col-md-6">
+                                    <div class="blog-box">
+                                        <div class="post-media">
+                                            <a href="{{ post.get_absolute_url }}" title="">
+                                                {% if post.picture %}
+                                                <img src="{{ post.picture.url }}" alt="" class="img-fluid">
+                                                {% endif %}
+
+                                                <div class="hovereffect">
+                                                    <span></span>
+                                                </div><!-- end hover -->
+                                            </a>
+                                        </div><!-- end media -->
+                                        <div class="blog-meta big-meta">
+                                            <span class="color-orange"><a href="{{ post.category.get_absolute_url }}"
+                                                    title="">
+                                                    {{post.category }}</a></span>
+                                            <h4><a href="{{ post.get_absolute_url }}" title="">{{ post.name }}</a></h4>
+                                            <p>{{ post.content|safe|linebreaksbr|truncatewords_html:50 }}</p>
+                                            <small><a href="{{ post.get_absolute_url }}"
+                                                    title="">{{ post.created_at }}</a></small>
+                                            <small>{{ post.author }}</small>
+                                            <small><a href="{{ post.get_absolute_url }}" title=""><i
+                                                        class="fa fa-eye"></i>
+                                                    {% get_hit_count for post %}</a></small>
+                                        </div><!-- end meta -->
+                                    </div><!-- end blog-box -->
+                                </div><!-- end col -->
+                                {% endfor %}
+
+
+                            </div><!-- end row -->
+                        </div><!-- end blog-grid-system -->
+                    </div><!-- end page-wrapper -->
+
+                    <hr class="invis3">
+
+                    {% if is_paginated %}
+                    {% include "inc/_paginator.html" %}
+                    {% endif %}
+                </div><!-- end col -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </section>
+
+
+
+    <div class="dmtop">Scroll to Top</div>
+
+</div><!-- end wrapper -->
+{% endblock content %}

@@ -1,0 +1,9 @@
+<div class="mt-4">
+    <h2 class="widget-title">Tags</h2>
+    <div class="">
+        {% for tag in tags %}
+        <a href="{{ tag.get_absolute_url }}"><small class="text-uppercase table-bordered mx-1">{{ tag.name }}</small>
+        </a>
+        {% endfor %}
+    </div><!-- end blog-list -->
+</div><!-- end widget -->

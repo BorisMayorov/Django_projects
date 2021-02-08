@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+{% if prev_post  %}
+<a href="{{ prev_post.get_absolute_url }}" class="fh5co-post-prev"><span><i class="icon-chevron-left"></i>
+        Prev</span></a>
+{% endif %}
+{% if next_post  %}
+<a href="{{ next_post.get_absolute_url }}" class="fh5co-post-next"><span>Next <i
+            class="icon-chevron-right"></i></span></a>
+{% endif %}
+
+
+<div class="container-fluid">
+    <div class="row fh5co-post-entry single-entry">
+
+        <article
+            class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-12 col-xs-offset-0">
+            <figure class="animate-box fadeInUp animated">
+                <img src="{{ post.image.url }}" alt="Image" class="img-responsive">
+            </figure>
+            <span class="fh5co-meta animate-box fadeInUp animated"><a
+                    href="{{ post.category.get_absolute_url }}">{{ post.category }}</a></span>
+            <h2 class="fh5co-article-title animate-box fadeInUp animated">{{ post.title }}</h2>
+            <span class="fh5co-meta fh5co-date animate-box fadeInUp animated">{{ post.created_at }}</span>
+
+            <div
+                class="col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-left content-article">
+                <div class="row">
+                    <div class="col-lg-8 cp-r animate-box fadeInUp animated">
+                        {{ post.content|safe|escape }}
+                    </div>
+
+        </article>
+    </div>
+</div>
+
+{% endblock content %}

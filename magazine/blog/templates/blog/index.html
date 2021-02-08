@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+
+{% block content %}
+
+
+
+
+<div class="container-fluid">
+    {% if posts %}
+
+    <div class="row fh5co-post-entry">
+        {% for post in posts %}
+        <article class="col-lg-3 col-md-3 col-sm-3 col-xs-6 col-xxs-12 animate-box">
+            <figure>
+                <a href="{{ post.get_absolute_url }}"><img src="{{ post.image.url }}" alt="Image"
+                        class="img-responsive"></a>
+            </figure>
+            <span class="fh5co-meta"><a href="{{ post.category.get_absolute_url }}">{{ post.category }}</a></span>
+            <h2 class="fh5co-article-title"><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h2>
+            <span class="fh5co-meta fh5co-date">{{ post.created_at }}</span>
+        </article>
+
+        {% if forloop.counter|divisibleby:"4" %}
+        <div class="clearfix visible-lg-block visible-md-block visible-sm-block visible-xs-block"></div>
+        {% else %}
+        {% if forloop.counter|divisibleby:"2" %}
+        <div class="clearfix visible-xs-block"></div>
+        {% endif %}
+        {% endif %}
+
+        {% endfor %}
+
+    </div>
+    {% else %}
+    <div class="text-center">
+        <h2>Not Found</h2>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock content %}
